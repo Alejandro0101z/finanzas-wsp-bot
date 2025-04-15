@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const OpenAI = require('openai');
+const { OpenAI } = require('openai');
 const { appendToSheet } = require('./google');
 require('dotenv').config();
 
@@ -17,7 +17,7 @@ app.post('/webhook', async (req, res) => {
   console.log(`📩 Mensaje recibido de ${from}:`, message);
 
   try {
-    const completion = await openai.createChatCompletion({
+  const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
