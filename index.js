@@ -28,7 +28,20 @@ app.post('/webhook', async (req, res) => {
       ]
     });
 
-    const montoExtraido = completion.data.choices[0].message.content.trim();
+    if (
+  !completion ||
+  !completion.data ||
+  !completion.data.choices ||
+  !completion.data.choices[0] ||
+  !completion.data.choices[0].message
+) {
+  console.error("❌ Error: No se pudo obtener la respuesta de OpenAI.");
+      console.log("🧠 Respuesta completa de OpenAI:", JSON.stringify(completion, null, 2));
+  return res.sendStatus(500);
+}
+
+const montoExtraido = completion.data.choices[0].message.content.trim();
+
     console.log(`💵 Monto extraído:`, montoExtraido);
 
     await appendToSheet({
